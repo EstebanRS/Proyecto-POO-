@@ -29,17 +29,31 @@ public:
 	
 	 
 	   
-		void atk(){ //atacar
+		//void atk(){ //atacar
 		
-	}
 		void danio(){ // recibir ataque
 		
 		}
 		
 		void rest(){ // descansar
-			
+		int tiempo;
+		int max=50;
+				
+		    cout << "¿Por cuanto tiempo descansa " << nombre << "?" << endl;
+		    cin >> tiempo;
+		    energia = energia+(tiempo*2);
+		    if (energia > max){energia = max;}
 		} 
 		
+		void correr(){ // perder energia
+		int tiempo;
+		
+		    cout << "¿Por cuanto tiempo corre " << nombre << "?" << endl;
+			cin >> tiempo;
+			
+			energia = energia-(tiempo*2);
+			if (energia<0){energia=0;}
+		} 
 	
 };
 	
@@ -47,10 +61,17 @@ public:
 int main(int argc, char** argv) {
 	
 	Mono Roedor("Rata", 20, 50, 8, true);
-    Mono Who();
+    //Mono Who();
 
     Roedor.mostrar();
-    Who.mostrar();
+    //Who.mostrar();
+    
+    Roedor.correr();
+    Roedor.mostrar();
+    
+    Roedor.rest();
+    Roedor.mostrar();
+    
     
 	return 0;
 }
