@@ -4,15 +4,16 @@
 using namespace std;
 
 class Mono{
-public:
+private:
 	string nombre;
 	int hp;
 	int energia;
 	int ataque;
 	bool vivo;
 	
+public:
     Mono (){ //Por defecto
-		nombre="nadie"; hp=50; energia=30; ataque=10; vivo=true;
+		nombre="Nadie"; hp=50; energia=30; ataque=10; vivo=true;
 	}
 	
 	Mono (string n, int h, int e, int a, bool v){ //Constructor
@@ -24,15 +25,14 @@ public:
 	
 	void mostrar(){//Mirar datos
 	cout << " | Nombre: " << nombre << " | Vida: " << hp << " | Estamina: " << energia << " | Ataque : " << ataque << " | Estado: " << vivo << endl;
-
+	cout << endl;
 	}
 	
-	 
-	   
-		//void atk(){ //atacar
-		
-		void danio(){ // recibir ataque
-		
+		void atk(Mono& obj){ //atacar
+ 	     int vida;
+ 	     vida = obj.hp - ataque; 
+ 	     obj.hp = vida;
+ 	     cout << obj.nombre << " recibio " << ataque << " puntos de danio por parte de " << nombre << endl;
 		}
 		
 		void rest(){ // descansar
@@ -61,10 +61,10 @@ public:
 int main(int argc, char** argv) {
 	
 	Mono Roedor("Rata", 20, 50, 8, true);
-    //Mono Who();
+    Mono Who;
 
     Roedor.mostrar();
-    //Who.mostrar();
+    Who.mostrar();
     
     Roedor.correr();
     Roedor.mostrar();
@@ -72,6 +72,8 @@ int main(int argc, char** argv) {
     Roedor.rest();
     Roedor.mostrar();
     
+    Roedor.atk(Who);
+    Who.mostrar();
     
 	return 0;
 }
