@@ -37,6 +37,7 @@ public:
     //Setter
 	void setNombre(string n){
 	nombre = n;
+	
 }
 	
 	//Getters
@@ -46,75 +47,83 @@ public:
 	
 	//Mirar datos
 	void mostrar(){
-	string estado;
-	 if(vivo=true){
-	 estado = "Con vida";
-	 }else estado = "Muerto";
-	cout << " | Nombre: " << nombre << " | Vida: " << max_hp << "/" << hp << " | Estamina: " << max_eng << "/" << energia << " | Ataque : " << atk << " | Estado: " << estado << endl;
+	cout << "[*] Nombre: " << nombre << " | Vida: " << max_hp << "/" << hp << " | Estamina: " << max_eng << "/" << energia << " | Ataque : " << atk << endl;
 	cout << endl;
 	}
 	
     //atacar
 	void atacar(Ser& obj){ 
+	     if (energia<=0){cout << "[!] No puedes realizar esta accion." << endl;
+	      cout << endl;}
+	     else{
  	     int vida;
  	     vida = obj.hp - atk; 
  	     obj.hp = vida;
  	     if(obj.hp<=0){obj.hp=0;}
- 	     cout << obj.nombre << " recibio " << atk << " puntos de danio por parte de " << nombre << endl;
+ 	     cout << "[-] " << obj.nombre << " recibio " << atk << " puntos de danio por parte de " << nombre << endl; cout << endl;
+ 	     energia = energia-51;
+ 	     if (energia<0){energia=0;}
 		}
+	}
 	
-	// descansar	
+	//descansar	
 	void rest(){ 
 		int tiempo;
-		    cout << "¿Por cuantos minutos descansa " << nombre << "?" << endl;
-		    cin >> tiempo;
+		    cout << "[?] Por cuantos minutos descansa " << nombre << "?" << endl;
+		    cout << "[->] "; cin >> tiempo;
 		    energia = energia + (tiempo*2);
 		    if (energia > max_eng){energia = max_eng;}
-		} 
-	
-	// perder energia	
-	void correr(){ 
-		int tiempo;
-		
-		    cout << "¿Por cuanto tiempo corre " << nombre << "?" << endl;
-			cin >> tiempo;
-			
-			energia = energia - (tiempo*2);
-			if (energia<0){energia=0;}
+		cout << "[+] " << nombre << "recupero " << tiempo*2 << " puntos de energia!" << endl; cout << endl;
 		} 
 	
 };	
 
 int main(int argc, char** argv) {
 	
+	//Uso Contructores
 	//Se crean los objetos
-	Ser Roedor("Rata", 20, 20, 50, 50, 100, true);
-	Ser Who;
+	Ser Roedor("Rata", 20, 20, 50, 50, 25, true); //Por parametros
+	Ser Who; //Por defecto
 	
-	Roedor.mostrar();
+	Roedor.mostrar(); //Datos iniciales
+	Who.mostrar(); //Datos iniciales
+	
+	//Uso getters y setters
 	//opcion de cambiar tu nombre
-	int res;
-	cout << "Te llamas: " << Roedor.getNombre() << endl << "Quieres cambiar tu nombre?" << endl << "Si= 1       No= Otro#"<< endl;
-	cin >> res;
+	string res;
+	cout << "[*] Te llamas: " << Roedor.getNombre() << endl << " [?] Quieres cambiar tu nombre? (Responder en mayusculas)"<< endl;
+	cout << "[->] "; cin >> res; cout << endl;
 	
-	if(res==1){
+	if(res=="SI"){
 	string nom;
-	cout << "Como te quieres llamar ahora?" << endl;
-	cin >> nom; 
+	cout << "[?] Como te quieres llamar ahora?" << endl;
+	cout << "[->] "; cin >> nom; 
 	Roedor.setNombre(nom);
-	cout << "Ahora te llamas " << Roedor.getNombre() << " !" << endl;}
+	cout << "[*] Ahora te llamas " << Roedor.getNombre() << "!" << endl; cout << endl;
+	Roedor.mostrar();} //Info con el nuevo nombre
 
-    Roedor.mostrar();
-    Who.mostrar();
+    //Uso Metodos
+    Roedor.atacar(Who); //Roedor ataca a who
+    Roedor.atacar(Who);//Esta vez roedor no puede hacer la acción por falta de energia
+    Roedor.mostrar(); //Datos actualizados
+    Who.mostrar(); //Datos actualizados
     
-    /*Roedor.correr();
-    Roedor.mostrar();
+    Roedor.rest();//Roedor descansa para ganar energia
+    Roedor.atacar(Who);//Podrá hacerlo según el tiempo asignado
+    Roedor.mostrar(); //Datos actualizados (Otra vez)
+    Who.mostrar(); //Datos actualizados (Otra vez)
     
-    Roedor.rest();
-    Roedor.mostrar();*/
-    
-    Roedor.atacar(Who);
-    Who.mostrar();
+    //Uso destructor
+    Who.~Ser();//Destruimos el objeto porque está muerto
     
 	return 0;
 }
+
+/* SIMBOLOGÍA DE COUT
+[*] Afirmación del programa
+[->] Respuesta del usuario
+[?] Pregunta
+[!] La accion no es posible
+[-] Las estadisticas de un objeto bajan
+[+] Las estadisticas de un objeto suben
+*/
