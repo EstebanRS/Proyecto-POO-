@@ -1,9 +1,11 @@
+//Añadir destructor + cambiar clase "Mono" -> "Ser"
+
 #include <iostream>
 #include <stdlib.h>
 #include <string.h>
 using namespace std;
 
-class Mono{
+class Ser{
 private:
 	string nombre;
 	int hp;
@@ -12,15 +14,18 @@ private:
 	bool vivo;
 	
 public:
-    Mono (){ //Por defecto
+    Ser(){ //Constructor por defecto
 		nombre="Nadie"; hp=50; energia=30; ataque=10; vivo=true;
 	}
 	
-	Mono (string n, int h, int e, int a, bool v){ //Constructor
+	Ser(string n, int h, int e, int a, bool v){ //Constructor por parametros
 		nombre=n;
 		hp=h;
 		energia=e;
 		ataque=a;
+	}
+	
+    ~Ser(){ //Destructor
 	}
 	
 	void mostrar(){//Mirar datos
@@ -28,7 +33,7 @@ public:
 	cout << endl;
 	}
 	
-		void atk(Mono& obj){ //atacar
+		void atk(Ser& obj){ //atacar
  	     int vida;
  	     vida = obj.hp - ataque; 
  	     obj.hp = vida;
@@ -60,17 +65,17 @@ public:
 
 int main(int argc, char** argv) {
 	
-	Mono Roedor("Rata", 20, 50, 8, true);
-    Mono Who;
+	Ser Roedor("Rata", 20, 50, 8, true);
+    Ser Who;
 
-    Roedor.mostrar();
+    //Roedor.mostrar();
     Who.mostrar();
     
-    Roedor.correr();
+    /*Roedor.correr();
     Roedor.mostrar();
     
     Roedor.rest();
-    Roedor.mostrar();
+    Roedor.mostrar();*/
     
     Roedor.atk(Who);
     Who.mostrar();
