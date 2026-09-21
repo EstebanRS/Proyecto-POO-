@@ -14,11 +14,13 @@ private:
 	bool vivo;
 	
 public:
-    Ser(){ //Constructor por defecto
+	//Constructor por defecto
+    Ser(){ 
 		nombre="Nadie"; max_hp=50; hp=50; max_eng=30; energia=30; atk=10; vivo=true;
 	}
 	
-	Ser(string n, int maxh, int h, int maxe, int e, int a, bool v){ //Constructor por parametros
+	//Constructor por parametros
+	Ser(string n, int maxh, int h, int maxe, int e, int a, bool v){ 
 		nombre=n;
 		max_hp=maxh;
 		hp=h;
@@ -28,33 +30,50 @@ public:
 		vivo=v;
 	}
 	
-    ~Ser(){ //Destructor
+	//Destructor
+    ~Ser(){ 
 	}
+
+    //Setter
+	void setNombre(string n){
+	nombre = n;
+}
+	
+	//Getters
+	string getNombre() const { return nombre;}
 	
 	//FUNCIONES
-	void mostrar(){//Mirar datos
-	cout << " | Nombre: " << nombre << " | Vida: " << max_hp << "/" << hp << " | Estamina: " << max_eng << "/" << energia << " | Ataque : " << atk << endl;
+	
+	//Mirar datos
+	void mostrar(){
+	string estado;
+	 if(vivo=true){
+	 estado = "Con vida";
+	 }else estado = "Muerto";
+	cout << " | Nombre: " << nombre << " | Vida: " << max_hp << "/" << hp << " | Estamina: " << max_eng << "/" << energia << " | Ataque : " << atk << " | Estado: " << estado << endl;
 	cout << endl;
 	}
 	
-		void atacar(Ser& obj){ //atacar
+    //atacar
+	void atacar(Ser& obj){ 
  	     int vida;
  	     vida = obj.hp - atk; 
  	     obj.hp = vida;
  	     if(obj.hp<=0){obj.hp=0;}
  	     cout << obj.nombre << " recibio " << atk << " puntos de danio por parte de " << nombre << endl;
 		}
-		
-		void rest(){ // descansar
+	
+	// descansar	
+	void rest(){ 
 		int tiempo;
-				
-		    cout << "¿Por cuanto tiempo descansa " << nombre << "?" << endl;
+		    cout << "¿Por cuantos minutos descansa " << nombre << "?" << endl;
 		    cin >> tiempo;
 		    energia = energia + (tiempo*2);
 		    if (energia > max_eng){energia = max_eng;}
 		} 
-		
-		void correr(){ // perder energia
+	
+	// perder energia	
+	void correr(){ 
 		int tiempo;
 		
 		    cout << "¿Por cuanto tiempo corre " << nombre << "?" << endl;
@@ -64,13 +83,26 @@ public:
 			if (energia<0){energia=0;}
 		} 
 	
-};
-	
+};	
 
 int main(int argc, char** argv) {
 	
+	//Se crean los objetos
 	Ser Roedor("Rata", 20, 20, 50, 50, 100, true);
-    Ser Who;
+	Ser Who;
+	
+	Roedor.mostrar();
+	//opcion de cambiar tu nombre
+	int res;
+	cout << "Te llamas: " << Roedor.getNombre() << endl << "Quieres cambiar tu nombre?" << endl << "Si= 1       No= Otro#"<< endl;
+	cin >> res;
+	
+	if(res==1){
+	string nom;
+	cout << "Como te quieres llamar ahora?" << endl;
+	cin >> nom; 
+	Roedor.setNombre(nom);
+	cout << "Ahora te llamas " << Roedor.getNombre() << " !" << endl;}
 
     Roedor.mostrar();
     Who.mostrar();
