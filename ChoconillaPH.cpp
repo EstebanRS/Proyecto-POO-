@@ -1,5 +1,3 @@
-//Añadir destructor + cambiar clase "Mono" -> "Ser"
-
 #include <iostream>
 #include <stdlib.h>
 #include <string.h>
@@ -8,46 +6,52 @@ using namespace std;
 class Ser{
 private:
 	string nombre;
+	int max_hp;
 	int hp;
+	int max_eng;
 	int energia;
-	int ataque;
+	int atk;
 	bool vivo;
 	
 public:
     Ser(){ //Constructor por defecto
-		nombre="Nadie"; hp=50; energia=30; ataque=10; vivo=true;
+		nombre="Nadie"; max_hp=50; hp=50; max_eng=30; energia=30; atk=10; vivo=true;
 	}
 	
-	Ser(string n, int h, int e, int a, bool v){ //Constructor por parametros
+	Ser(string n, int maxh, int h, int maxe, int e, int a, bool v){ //Constructor por parametros
 		nombre=n;
+		max_hp=maxh;
 		hp=h;
+		max_eng=maxe;
 		energia=e;
-		ataque=a;
+		atk=a;
+		vivo=v;
 	}
 	
     ~Ser(){ //Destructor
 	}
 	
+	//FUNCIONES
 	void mostrar(){//Mirar datos
-	cout << " | Nombre: " << nombre << " | Vida: " << hp << " | Estamina: " << energia << " | Ataque : " << ataque << " | Estado: " << vivo << endl;
+	cout << " | Nombre: " << nombre << " | Vida: " << max_hp << "/" << hp << " | Estamina: " << max_eng << "/" << energia << " | Ataque : " << atk << endl;
 	cout << endl;
 	}
 	
-		void atk(Ser& obj){ //atacar
+		void atacar(Ser& obj){ //atacar
  	     int vida;
- 	     vida = obj.hp - ataque; 
+ 	     vida = obj.hp - atk; 
  	     obj.hp = vida;
- 	     cout << obj.nombre << " recibio " << ataque << " puntos de danio por parte de " << nombre << endl;
+ 	     if(obj.hp<=0){obj.hp=0;}
+ 	     cout << obj.nombre << " recibio " << atk << " puntos de danio por parte de " << nombre << endl;
 		}
 		
 		void rest(){ // descansar
 		int tiempo;
-		int max=50;
 				
 		    cout << "¿Por cuanto tiempo descansa " << nombre << "?" << endl;
 		    cin >> tiempo;
-		    energia = energia+(tiempo*2);
-		    if (energia > max){energia = max;}
+		    energia = energia + (tiempo*2);
+		    if (energia > max_eng){energia = max_eng;}
 		} 
 		
 		void correr(){ // perder energia
@@ -56,7 +60,7 @@ public:
 		    cout << "¿Por cuanto tiempo corre " << nombre << "?" << endl;
 			cin >> tiempo;
 			
-			energia = energia-(tiempo*2);
+			energia = energia - (tiempo*2);
 			if (energia<0){energia=0;}
 		} 
 	
@@ -65,10 +69,10 @@ public:
 
 int main(int argc, char** argv) {
 	
-	Ser Roedor("Rata", 20, 50, 8, true);
+	Ser Roedor("Rata", 20, 20, 50, 50, 100, true);
     Ser Who;
 
-    //Roedor.mostrar();
+    Roedor.mostrar();
     Who.mostrar();
     
     /*Roedor.correr();
@@ -77,7 +81,7 @@ int main(int argc, char** argv) {
     Roedor.rest();
     Roedor.mostrar();*/
     
-    Roedor.atk(Who);
+    Roedor.atacar(Who);
     Who.mostrar();
     
 	return 0;
