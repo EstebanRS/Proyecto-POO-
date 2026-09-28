@@ -1,6 +1,6 @@
 #include <iostream>
 #include <stdlib.h>
-#include <string.h>
+#include <string>
 using namespace std;
 
 class Ser{
@@ -27,7 +27,7 @@ public:
         void setHp(int h) {
          if (h < 0) h = 0;
          if (h > max_hp) h = max_hp;
-         if (hp == 0) vivo = false;
+         //if (hp == 0) vivo = false;
          hp = h;}
 
         void setEnergia(int e) {
@@ -43,20 +43,19 @@ public:
 	
 	//Mirar datos
 	void mostrar(){
-        string estado; if (vivo=true){estado="Con vida";}else{estado="Muerto";}
+       // string estado; if (vivo=true){estado="Con vida";}else{estado="Muerto";}
 	cout << "[*] Nombre: " << nombre << " | Vida: " << hp << "/" << max_hp << " | Estamina: " << energia << "/" << max_eng << " | Ataque : " << atk << endl;
 	cout << endl;
 	}
 	
     //atacar
 	void atacar(Ser& obj){ 
-	     if (energia<=0){cout << "[!] No puedes realizar esta accion." << endl;
-	      cout << endl;}
+	     if (energia<=0){cout << "[!] No puedes realizar esta accion." << endl << endl;}
 	     else{
  	     int NuevaVida;
  	     NuevaVida = obj.hp - atk; 
  	     obj.setHp(NuevaVida);
- 	     cout << "[-] " << obj.nombre << " recibio " << atk << " puntos de danio por parte de " << nombre << endl; cout << endl;
+ 	     cout << "[-] " << obj.nombre << " recibio " << atk << " puntos de danio por parte de " << nombre << endl<< endl;
  	     setEnergia(energia-51);
 		}
 	}
@@ -67,16 +66,16 @@ public:
 		    cout << "[?] Por cuantos minutos descansa " << nombre << "?" << endl;
 		    cout << "[->] "; cin >> tiempo;
 		    setEnergia(energia + (tiempo*2));
-		cout << "[+] " << nombre << "recupero " << tiempo*2 << " puntos de energia!" << endl; cout << endl;
+		cout << endl << "[+] " << nombre << " recupero " << tiempo*2 << " puntos de energia!" << endl << endl;
 		} 
 	
 	void curar() { 
-        cout << nombre << " usa curacion basica (+10 de vida)." << endl;
+        cout << "[+] " << nombre << " usa curacion basica (+10 de vida)." << endl << endl;
         setHp(hp + 10);
     }
 
     void curar(int cantidad) { 
-        cout << nombre << " usa una pocion y se cura por " << cantidad << " puntos de vida." << endl;
+        cout << "[+] " << nombre << " usa una pocion y se cura por " << cantidad << " puntos de vida." << endl << endl;
         setHp(hp + cantidad);
     }
 };	
@@ -108,9 +107,12 @@ int main(int argc, char** argv) {
     //Uso Metodos
     Roedor.atacar(Who); //Roedor ataca a who
     Roedor.atacar(Who);//Esta vez roedor no puede hacer la acción por falta de energia
+    Who.atacar(Roedor);//Roedor recibe daño
+    
     Roedor.mostrar(); //Datos actualizados
     Who.mostrar(); //Datos actualizados
-    
+
+    Roedor.curar(100);//Uso de metodo sobrecargado para curarse
     Roedor.rest();//Roedor descansa para ganar energia
     Roedor.atacar(Who);//Podrá hacerlo según el tiempo asignado
     Roedor.mostrar(); //Datos actualizados (Otra vez)
