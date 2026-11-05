@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <ctime>
+#include <limits>
 
 using namespace std;
 
@@ -41,7 +42,87 @@ public:
     virtual void combatir(Ser& obj) = 0;
 };    
 
-class Roedor : public Ser {
+class Mapa {
+	public:
+	
+	~Mapa(){}
+	
+	virtual void stats() = 0;
+	virtual void full()= 0;
+	virtual void compra() = 0;
+	
+	void movimiento(){
+    int op;
+    
+    do {
+        cout << "|°  ~ - - - ú - - - ~  °| " << endl 
+             << "|  [1]  Madriguera   |" << endl 
+             << "|  [2] Tienda   |" << endl 
+             << "|  [3] Afuera   |" << endl 
+             << "|  [4] Salir    |" << endl 
+             << "|°  ~ - - - ú - - - ~  °| " << endl;
+        cout << "        ... "; 
+        
+        if (!(cin >> op)) {
+            cin.clear(); 
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+            op = 0;
+        }
+        cout << endl;
+        
+        switch(op){
+            case 1:
+                cout << "Volviendo Casa..." << endl << endl;
+                int hacer;
+                do{
+                    cout << "|°  ~ - - - ú - - - ~  °| " << endl 
+                         << "|  [1] Ver estadisticas  |" << endl 
+                         << "|  [2] Restablecerse   |" << endl 
+                         << "|  [3]     Cerrar        |" << endl 
+                         << "|°  ~ - - - ú - - - ~  °| " << endl;
+                    cout << "        ... "; 
+                    
+                    if (!(cin >> hacer)) {
+                        cin.clear(); 
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                        hacer = 0;
+                    }
+                    cout << endl;
+                    
+                    switch(hacer){
+                        case 1: stats(); cout << endl; break;
+                        case 2: full(); break;
+                        case 3: cout << "Volviendo..." << endl << endl; break;
+                        default: cout << "Opcion no valida" << endl << endl; break;
+                    }
+                } while (hacer != 3);
+                break;
+                
+            case 2:
+                cout << "Visitando la tienda..." << endl << endl;
+                compra();
+                break;
+                
+            case 3:
+                cout << "Adventurandose..." << endl << endl;    
+                break;
+                
+            case 4:
+                cout << "Cerrando..." << endl;
+                break;
+                
+            default:
+                cout << "Opcion no valida" << endl << endl;
+                break;
+        }
+    } while (op != 4);
+}
+	
+	
+};
+
+
+class Roedor : public Ser, public Mapa {
 private:
 	int max_eng;
 	int energia;
@@ -95,16 +176,25 @@ public:
     	int vidaA= hp+(max_hp/2);
         cout << "-> " << nombre << " se cura " << (max_hp/2) << " puntos de vida." << endl << endl;
         setHp(vidaA);
+        queso = queso-1;
     }
 
     void combatir(Ser& obj) override {
         int des;
-        cout << "[1] Atacar" << endl 
-             << "[2] Habilidad" << endl 
-             << "[3] Curar" << endl 
-             << "[4] Descansar" << endl 
-             << "... ";
-        cin >> des; 
+        
+        cout << "|°  ~ - - - ú - - - ~  °| " << endl;
+        cout << "|  [1] Atacar       |" << endl 
+             << "|  [2] Habilidad    |" << endl 
+             << "|  [3] Curar        |" << endl 
+             << "|  [4] Descansar    |" << endl;
+        cout << "|°  ~ - - - ú - - - ~  °| " << endl;
+        cout << "        ... "; 
+        
+        if (!(cin >> des)) {
+            cin.clear(); 
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            des = 0;
+        }
         cout << endl;
         
         switch(des) {
@@ -123,8 +213,26 @@ public:
             default:
                 cout << "Opcion no valida" << endl << endl;
                 break;
+        }
+    }
+
+    void stats() override {
+	mostrar();
 	}
-}
+	
+	void full() override{
+	setEnergia(max_eng);
+	setHp(max_hp);
+	
+	cout << "-> " << nombre << " se restaura por completo." << endl << endl;
+	}
+
+    void compra() override{
+	int quesoA=queso+3;
+	queso=quesoA;
+	
+	cout << "-> " << nombre << " compra 3 piezas de queso para mas tarde." << endl << endl;
+	}
 };
 
 class Enemigo: public Ser {
@@ -207,7 +315,14 @@ public:
 };
 
 
+
 int main(int argc, char** argv) {
+    Roedor Us("Choconilla", 50, 50, 80, 0, 20, 10);
+    Gato Jefe("Zeus", 100, 100, 25, 0);
+    Serpiente Ouch("Aja", 80, 80, 10, 0);
+
+    Us.movimiento();
+
     
     return 0;
 }
@@ -215,6 +330,4 @@ int main(int argc, char** argv) {
 /* SIMBOLOGÍA DE COUT
 -> Afirmación del programa
 ... El programa espera respuesta
-<- Respuesta del usuario
-
 */
